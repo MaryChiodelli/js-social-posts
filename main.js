@@ -59,37 +59,26 @@ const posts = [
 const postsListEl = document.querySelector('.posts-list');
 postsListEl.innerHTML = '';
 
-
 posts.forEach( function(element) {
     const div = createPostEl(element);
     postsListEl.innerHTML += div;
 } );
 
 const likeButtonEls = document.querySelectorAll('.js-like-button');
-const likeCounterEls = document.querySelectorAll('[id^="like-counter-"]');
-console.log(likeCounterEls);
 
 const postIdWithLike = [];
 
 likeButtonEls.forEach( function(element) {
     element.addEventListener('click', function() {
         this.classList.add('like-button--liked');
-        const postID = 'like-counter-' + this.dataset.postid;
+        const postID = this.dataset.postid;
         postIdWithLike.push(postID);
-        console.log(postIdWithLike);
-
-        likeCounterEls.forEach( function(element) {
-            const id = element.id;
-            let value = parseInt(element.innerHTML);
-            if (postIdWithLike.includes(id)) {
-                element.innerHTML = value + 1;
-            }
-        } )
+        
+        const likeCounter = this.parentElement.nextElementSibling.firstElementChild;
+        likeCounter.innerHTML = parseInt(likeCounter.innerHTML) + 1;
+        console.log(likeCounter);
     } );
 } );
-
-
-console.log(postIdWithLike);
 
 function createPostEl(post) {
     return `<div class="post">
