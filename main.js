@@ -74,9 +74,17 @@ const postIdWithLike = [];
 likeButtonEls.forEach( function(element) {
     element.addEventListener('click', function() {
         this.classList.add('like-button--liked');
-        const postID = this.dataset.postid;
+        const postID = 'like-counter-' + this.dataset.postid;
         postIdWithLike.push(postID);
         console.log(postIdWithLike);
+
+        likeCounterEls.forEach( function(element) {
+            const id = element.id;
+            let value = parseInt(element.innerHTML);
+            if (postIdWithLike.includes(id)) {
+                element.innerHTML = value + 1;
+            }
+        } )
     } );
 } );
 
