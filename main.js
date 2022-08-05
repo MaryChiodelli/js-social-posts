@@ -36,7 +36,7 @@ const posts = [
         id: 4,
         author: {
             name: 'Luca Formicola',
-            image: null
+            image: ''
         },
         created: '04-03-2021',
         content: 'Placeat libero ipsa nobis ipsum quibusdam quas harum ut. Distinctio minima iusto. Ad ad maiores et sint voluptate recusandae architecto. Et nihil ullam aut alias.',
@@ -59,9 +59,23 @@ const posts = [
 const postsListEl = document.querySelector('.posts-list');
 postsListEl.innerHTML = '';
 
-posts.forEach( (post) => {
-    const div = `
-    <div class="post">
+
+posts.forEach( function(element) {
+    const div = createPostEl(element);
+    postsListEl.innerHTML += div;
+} );
+
+const likeButtonEls = document.querySelectorAll('.js-like-button');
+
+likeButtonEls.forEach( function(element) {
+    element.addEventListener('click', function() {
+        this.classList.add('like-button--liked');
+    } );
+
+} );
+
+function createPostEl(post) {
+    return `<div class="post">
         <div class="post__header">
             <div class="post-meta">
                 <div class="post-meta__icon">
@@ -69,7 +83,7 @@ posts.forEach( (post) => {
                 </div>
                 <div class="post-meta__data">
                     <div class="post-meta__author">${post.author.name}</div>
-                    <div class="post-meta__time">4 mesi fa</div>
+                    <div class="post-meta__time">${post.created}</div>
                 </div>
             </div>
         </div>
@@ -80,7 +94,7 @@ posts.forEach( (post) => {
         <div class="post__footer">
             <div class="likes js-likes">
                 <div class="likes__cta">
-                    <a class="like-button  js-like-button" href="#" data-postid="1">
+                    <a class="like-button  js-like-button" href="#" data-postid="${post.id}">
                         <i class="like-button__icon fas fa-thumbs-up" aria-hidden="true"></i>
                         <span class="like-button__label">Mi Piace</span>
                     </a>
@@ -91,5 +105,4 @@ posts.forEach( (post) => {
             </div>
         </div>
     </div>`;
-    postsListEl.innerHTML += div;
-} );
+}
