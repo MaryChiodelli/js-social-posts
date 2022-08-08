@@ -59,19 +59,50 @@ const posts = [
 const postsListEl = document.querySelector('.posts-list');
 postsListEl.innerHTML = '';
 
+const postsWithNoAvatar = [];
+
 posts.forEach( function(element) {
-    
+
+    if (!element.author.image) {
+        postsWithNoAvatar.push(element.id);
+    }
+
     let date = element.created.split('-');
     const month = date[0];
     const day = date[1];
     const year = date[2];
     date = `${day}-${month}-${year}`;
     
-    console.log(date);
-    
     const div = createPostEl(element, date);
     postsListEl.innerHTML += div;
 } );
+
+const postsEl = document.querySelectorAll('.post');
+
+postsEl.forEach((post, index) => {
+    const postID =  index + 1;
+    let name = posts[index].author.name;
+    const splittedName = name.split(' ');
+    const [firstName, lastName] = splittedName;
+    firstName.split('');
+    lastName.split('');
+    name = firstName[0] + lastName[0];
+
+    if (postsWithNoAvatar.includes(postID)) {
+        const postIcon = post.querySelector('.post-meta__icon');
+        const img = post.querySelector('.profile-pic');
+
+        const div = document.createElement('div');
+        const span = document.createElement('span');
+
+        div.classList.add('profile-pic-default');
+        span.innerText = name;
+
+        div.append(span)
+        postIcon.append(div);
+        img.remove();
+    }
+});
 
 const likeButtonEls = document.querySelectorAll('.js-like-button');
 
