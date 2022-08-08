@@ -60,6 +60,7 @@ const postsListEl = document.querySelector('.posts-list');
 postsListEl.innerHTML = '';
 
 const postsWithNoAvatar = [];
+const postsWithLike = [];
 
 posts.forEach( function(element) {
 
@@ -80,13 +81,11 @@ posts.forEach( function(element) {
 const postsEl = document.querySelectorAll('.post');
 
 postsEl.forEach((post, index) => {
-    const postID =  index + 1;
-    let name = posts[index].author.name;
-    const splittedName = name.split(' ');
-    const [firstName, lastName] = splittedName;
-    firstName.split('');
-    lastName.split('');
-    name = firstName[0] + lastName[0];
+    const likeButton = post.querySelector('.js-like-button');
+    const likeCounter = post.querySelector('.js-likes-counter');
+
+    const postID = index + 1;
+    const name = posts[index].author.name;
 
     if (postsWithNoAvatar.includes(postID)) {
         const postIcon = post.querySelector('.post-meta__icon');
@@ -96,29 +95,23 @@ postsEl.forEach((post, index) => {
         const span = document.createElement('span');
 
         div.classList.add('profile-pic-default');
-        span.innerText = name;
+        span.innerText = getNameInitials(name);
 
         div.append(span)
         postIcon.append(div);
         img.remove();
     }
-});
 
-const likeButtonEls = document.querySelectorAll('.js-like-button');
-
-const postIdWithLike = [];
-
-likeButtonEls.forEach( function(element) {
-    element.addEventListener('click', function() {
+    likeButton.addEventListener('click', function() {
         this.classList.add('like-button--liked');
-        const postID = this.dataset.postid;
-        postIdWithLike.push(postID);
-        
-        const likeCounter = this.parentElement.nextElementSibling.firstElementChild;
-        likeCounter.innerHTML = parseInt(likeCounter.innerHTML) + 1;
-        console.log(likeCounter);
-    } );
-} );
+        postsWithLike.push(postID);
+
+        if (postsWithLike.includes(postID)) {
+            const likeNumber = parseInt(likeCounter.innerText);
+            likeCounter.textContent = likeNumber + 1;
+        }
+    });
+});
 
 function createPostEl(post, date) {
     return `<div class="post">
@@ -151,4 +144,12 @@ function createPostEl(post, date) {
             </div>
         </div>
     </div>`;
+}
+
+function getNameInitials(name) {
+    const splittedName = name.split(' ');
+    const [firstName, lastName] = splittedName;
+    firstName.split('');
+    lastName.split('');
+    return firstName[0] + lastName[0];
 }
