@@ -60,7 +60,16 @@ const postsListEl = document.querySelector('.posts-list');
 postsListEl.innerHTML = '';
 
 posts.forEach( function(element) {
-    const div = createPostEl(element);
+    
+    let date = element.created.split('-');
+    const month = date[0];
+    const day = date[1];
+    const year = date[2];
+    date = `${day}-${month}-${year}`;
+    
+    console.log(date);
+    
+    const div = createPostEl(element, date);
     postsListEl.innerHTML += div;
 } );
 
@@ -80,7 +89,7 @@ likeButtonEls.forEach( function(element) {
     } );
 } );
 
-function createPostEl(post) {
+function createPostEl(post, date) {
     return `<div class="post">
         <div class="post__header">
             <div class="post-meta">
@@ -89,7 +98,7 @@ function createPostEl(post) {
                 </div>
                 <div class="post-meta__data">
                     <div class="post-meta__author">${post.author.name}</div>
-                    <div class="post-meta__time">${post.created}</div>
+                    <div class="post-meta__time">${date}</div>
                 </div>
             </div>
         </div>
