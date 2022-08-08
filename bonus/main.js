@@ -103,13 +103,17 @@ postsEl.forEach((post, index) => {
     }
 
     likeButton.addEventListener('click', function() {
-        this.classList.add('like-button--liked');
-        postsWithLike.push(postID);
-
-        if (postsWithLike.includes(postID)) {
-            const likeNumber = parseInt(likeCounter.innerText);
+        const likeNumber = parseInt(likeCounter.innerText);
+        
+        if (!postsWithLike.includes(postID)) {
+            postsWithLike.push(postID);
             likeCounter.textContent = likeNumber + 1;
-        }
+        } else {
+            postsWithLike.pop(postID);
+            likeCounter.textContent = likeNumber - 1;
+        } 
+        
+        this.classList.toggle('like-button--liked');
     });
 });
 
